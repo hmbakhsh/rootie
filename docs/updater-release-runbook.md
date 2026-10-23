@@ -61,11 +61,29 @@ The app reads the stable feed URL:
 https://github.com/hmbakhsh/rootie/releases/latest/download/appcast.xml
 ```
 
+## Automatic updates
+
+Rootie checks the feed on launch and every 6 hours (`SUScheduledCheckInterval`),
+downloads in the background and installs immediately through
+`updater(_:willInstallUpdateOnQuit:immediateInstallationBlock:)`, since Rootie is
+only busy for the instant it routes a link. After relaunch it posts "Rootie
+updated to X. Nothing to do on your end." **Check for Updates…** and
+`rootie update` remain for updating on demand.
+
+Config changes between releases go in `ConfigMigrations.all`
+(`Sources/Rootie/Migrations.swift`). They run on every config load, oldest
+first, and record progress in `~/.rootie/migrated-version`. Never remove an old
+migration.
+
+Release with `./scripts/release.sh MAJOR.MINOR.PATCH`: it tags, waits for this
+workflow, then bumps the Homebrew cask's version and checksum.
+
 ## Bootstrap release
 
 Rootie v0.4.0 does not contain Sparkle. The first updater-enabled release must be
-installed once through the existing Homebrew or manual path. Do not advertise
-`rootie update` until that bootstrap release is available.
+installed once by re-running the install line or `brew upgrade --cask rootie`.
+Say so in its release notes. Do not advertise `rootie update` until that
+bootstrap release is available.
 
 Before announcing it:
 
@@ -87,7 +105,7 @@ test feed. Verify:
 - manual apps update in both `/Applications` and `~/Applications`;
 - a broken feed, offline network, invalid archive signature, and denied
   authorization each leave the prior app launchable with an actionable error;
-- launching Rootie without checking causes no request to the update feed.
+- launching Rootie checks the feed once, then again only after 6 hours.
 
 ### Local pre-release evidence (2026-09-14)
 

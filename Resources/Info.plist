@@ -27,11 +27,13 @@
     <key>LSUIElement</key>
     <true/>
     <key>SUEnableAutomaticChecks</key>
-    <false/>
+    <true/>
+    <key>SUScheduledCheckInterval</key>
+    <integer>21600</integer>
     <key>SUAutomaticallyUpdate</key>
-    <false/>
+    <true/>
     <key>SUAllowsAutomaticUpdates</key>
-    <false/>
+    <true/>
     <key>SUFeedURL</key>
     <string>https://github.com/hmbakhsh/rootie/releases/latest/download/appcast.xml</string>
     <key>SUPublicEDKey</key>
