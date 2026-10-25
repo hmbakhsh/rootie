@@ -44,10 +44,9 @@ iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
 SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
 rm -rf "$SPARKLE/Versions/B/XPCServices" "$SPARKLE/XPCServices"
 
+# Ad-hoc signed, so no hardened runtime: its library validation rejects the
+# embedded Sparkle.framework and the app fails to launch.
 SIGN_ARGS=(--force --sign -)
-if [[ "$RELEASE_BUILD" == "1" ]]; then
-  SIGN_ARGS+=(--options runtime)
-fi
 
 codesign "${SIGN_ARGS[@]}" "$SPARKLE/Versions/B/Autoupdate"
 codesign "${SIGN_ARGS[@]}" "$SPARKLE/Versions/B/Updater.app"
