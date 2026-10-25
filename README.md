@@ -13,7 +13,7 @@ from Mail, Slack, Terminal, IDEs, and other apps.
 - Automatic starter configuration based on installed browsers and profiles
 - Plain JSON configuration at `~/.rootie/config.json`
 - CLI for setup, discovery, and validation
-- User-triggered, cryptographically verified updates from the CLI or menu bar
+- Automatic, cryptographically verified updates
 - Native menu-bar app with negligible idle CPU use
 - Universal app for Apple Silicon and Intel Macs
 
@@ -33,42 +33,28 @@ the JSON configuration.
 
 ## Install
 
-### Homebrew
-
-```sh
-brew install --cask hmbakhsh/tap/rootie
-```
-
-This installs both **Rootie.app** and the `rootie` command.
-
-### Install script
-
 ```sh
 curl -fsSL https://raw.githubusercontent.com/hmbakhsh/rootie/main/scripts/install-release.sh | zsh
 ```
 
-### Download
+Or with Homebrew: `brew install --cask hmbakhsh/tap/rootie` (also installs the
+`rootie` command). Or download `Rootie.zip` from the
+[latest release](https://github.com/hmbakhsh/rootie/releases/latest) and move
+**Rootie** to your Applications folder.
 
-Download `Rootie.zip` from the
-[latest release](https://github.com/hmbakhsh/rootie/releases/latest),
-unzip it, and move **Rootie** to your Applications folder.
+**Update:** automatic. Rootie checks on launch and every 6 hours, verifies the
+update's signature, and installs it in the background. To update now, choose
+**Check for Updates…** from the menu bar, run `rootie update`, or re-run the
+install line (it uses Homebrew if that's how you installed). Piping to
+`VERSION=0.5.0 zsh` instead installs a specific release.
 
-### Update
+**Uninstall:** quit Rootie, then `brew uninstall --cask rootie`, or delete
+**Rootie.app**. Your configuration stays in `~/.rootie/`; delete it too for a
+clean removal.
 
-After installing an updater-enabled release, check from the menu bar with
-**Check for Updates…** or run:
-
-```sh
-rootie update
-```
-
-The same Sparkle update flow works for Homebrew, install-script, and manual
-installations. It shows the installed and latest versions and release notes,
-then asks before downloading or installing anything. Rootie never checks for
-updates in the background.
-
-Versions older than the first updater-enabled release need one final update
-through Homebrew, the install script, or the latest release download.
+On version 0.4.0 or earlier, or installed it as **Browser Router**? Those
+versions can't update themselves. Run the install line (or
+`brew upgrade --cask rootie`) once; after that, updates are automatic.
 
 On first launch, Rootie creates `~/.rootie/config.json` using an
 installed browser and profile, then opens it in your text editor. Add your rules,
@@ -178,8 +164,7 @@ swift test
 ## Privacy
 
 Rootie routes links locally. It does not send URLs, configuration, or profile
-data anywhere. It contacts GitHub Releases only when you explicitly check for
-an update.
+data anywhere. Its only network request is the update check to GitHub Releases.
 
 ## License
 

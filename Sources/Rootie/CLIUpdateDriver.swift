@@ -62,7 +62,7 @@ final class CLIUpdateDriver: NSObject, SPUUserDriver, SPUUpdaterDelegate {
   func show(
     _ request: SPUUpdatePermissionRequest, reply: @escaping (SUUpdatePermissionResponse) -> Void
   ) {
-    reply(SUUpdatePermissionResponse(automaticUpdateChecks: false, sendSystemProfile: false))
+    reply(SUUpdatePermissionResponse(automaticUpdateChecks: true, sendSystemProfile: false))
   }
 
   func showUserInitiatedUpdateCheck(cancellation: @escaping () -> Void) {

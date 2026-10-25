@@ -41,6 +41,7 @@ final class ConfigStore {
   func load() -> Bool {
     do {
       try migrateLegacyConfigIfNeeded()
+      try ConfigMigrations.run(configURL: configURL)
       guard FileManager.default.fileExists(atPath: configURL.path) else {
         throw ConfigError.missing
       }
@@ -80,7 +81,12 @@ final class ConfigStore {
         at: configURL.deletingLastPathComponent(),
         withIntermediateDirectories: true)
       try FileManager.default.moveItem(at: legacyConfigURL, to: configURL)
-      try? FileManager.default.removeItem(at: legacyConfigURL.deletingLastPathComponent())
+      let legacyDirectory = legacyConfigURL.deletingLastPathComponent()
+      if (try? FileManager.default.contentsOfDirectory(atPath: legacyDirectory.path))?.isEmpty
+        == true
+      {
+        try? FileManager.default.removeItem(at: legacyDirectory)
+      }
     }
   }
 }

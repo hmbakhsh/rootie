@@ -11,8 +11,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private var lastResult = "Starting…"
 
   func applicationDidFinishLaunching(_ notification: Notification) {
-    nativeUpdater.start()
     buildMenu()
+    LegacyInstall.converge(defaultBrowserSetter: defaultBrowserSetter) { [weak self] error in
+      self?.showError(title: "Could not set default browser", error: error)
+    }
     if configStore.load() {
       updateStatus("Ready")
     } else if configStore.error as? ConfigError == .missing {
@@ -20,6 +22,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     } else {
       showError(title: "Could not load configuration", error: configStore.error)
     }
+    if let version = nativeUpdater.versionUpdatedSinceLastRun() {
+      if lastResult == "Ready" { updateStatus("Updated to \(version)") }
+      NativeUpdater.notifyUpdated(to: version)
+    }
+    nativeUpdater.start()
   }
 
   func application(_ application: NSApplication, open urls: [URL]) {

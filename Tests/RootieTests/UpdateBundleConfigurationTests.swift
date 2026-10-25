@@ -2,7 +2,7 @@ import Foundation
 import Testing
 
 struct UpdateBundleConfigurationTests {
-  @Test("Bundle config uses the signed user-initiated Sparkle feed")
+  @Test("Bundle config uses the signed, self-applying Sparkle feed")
   func sparkleConfiguration() throws {
     let plistURL = repositoryRoot.appendingPathComponent("Resources/Info.plist")
     let data = try Data(contentsOf: plistURL)
@@ -13,9 +13,10 @@ struct UpdateBundleConfigurationTests {
       plist["SUFeedURL"] as? String
         == "https://github.com/hmbakhsh/rootie/releases/latest/download/appcast.xml")
     #expect(plist["SUPublicEDKey"] as? String == "7e38BHArNTB69QPfvFxx4CqbDDSgiv+nPi6lgZIEJrQ=")
-    #expect(plist["SUEnableAutomaticChecks"] as? Bool == false)
-    #expect(plist["SUAutomaticallyUpdate"] as? Bool == false)
-    #expect(plist["SUAllowsAutomaticUpdates"] as? Bool == false)
+    #expect(plist["SUEnableAutomaticChecks"] as? Bool == true)
+    #expect(plist["SUScheduledCheckInterval"] as? Int == 6 * 3600)
+    #expect(plist["SUAutomaticallyUpdate"] as? Bool == true)
+    #expect(plist["SUAllowsAutomaticUpdates"] as? Bool == true)
     #expect(plist["SUEnableInstallerLauncherService"] == nil)
     #expect(plist["SUVerifyUpdateBeforeExtraction"] as? Bool == true)
     #expect(plist["SURequireSignedFeed"] as? Bool == true)
