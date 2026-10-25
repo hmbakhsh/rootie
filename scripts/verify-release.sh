@@ -9,6 +9,8 @@ SPARKLE_BIN="$ROOT/.build/artifacts/sparkle/Sparkle/bin"
 
 codesign --verify --deep --strict --verbose=2 "$APP"
 lipo "$APP/Contents/MacOS/Rootie" -verify_arch arm64 x86_64
+# Proves the binary loads its frameworks.
+"$APP/Contents/MacOS/Rootie" version >/dev/null
 
 VERSION=$(plutil -extract CFBundleShortVersionString raw "$APP/Contents/Info.plist")
 BUILD_NUMBER=$(plutil -extract CFBundleVersion raw "$APP/Contents/Info.plist")
